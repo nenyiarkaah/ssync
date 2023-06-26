@@ -1,0 +1,70 @@
+name: Ssync CI
+on: [push]
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io/${{ github.actor }}
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+jobs:
+  Ssync-CI:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: Setup JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: temurin
+          java-version: 8
+      # Install the cosign tool except on PR
+      # https://github.com/sigstore/cosign-installer
+      - name: Install cosign
+        if: github.event_name != 'pull_request'
+        uses: sigstore/cosign-installer@f3c664df7af409cb4873aa5068053ba9d61a57b6 #v2.6.0
+        with:
+          cosign-release: 'v1.11.0'
+      - name: Compile
+        run: sbt compile
+      - name: Build and Code Style Test
+        run: sbt +test:scalastyle
+      - name: Unit Tests
+        run: sbt +ut:test
+      - name: Integration Tests
+        run: sbt +it:test
+      # Login against a Docker registry except on PR
+      # https://github.com/docker/login-action
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      # Extract metadata (tags, labels) for Docker
+      # https://github.com/docker/metadata-action
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - name: Install Docker Buildx
+        if: github.event_name != 'pull_request'
+        run: docker buildx install
+      - name: Create a new builder instance
+        if: github.event_name != 'pull_request'
+        run: docker builder create --use --name multi-arch-builder
+      - name: Stage Docker image
+        if: github.event_name != 'pull_request'
+        run: sbt docker:stage
+      - name: Build and Publish Docker image
+        if: github.event_name != 'pull_request'
+        run: sbt docker:dockerBuildWithBuildx
