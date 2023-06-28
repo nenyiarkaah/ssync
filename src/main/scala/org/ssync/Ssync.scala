@@ -1,8 +1,10 @@
 package org.ssync
 
+import com.softwaremill.macwire.wire
 import com.typesafe.scalalogging.LazyLogging
 import org.ssync.info.BuildInfo.toJson
 import org.ssync.configs.AppConfig._
+import org.ssync.services.{ConfigConversions, IoCapabilities, SsyncItemProcessor}
 object Ssync extends App with LazyLogging {
 
   logger.info(
@@ -30,4 +32,14 @@ object Ssync extends App with LazyLogging {
   logger.info(s"Destination 🏛️:- ${settings.Archive}")
   logger.info(s"Extensions ፝:- ${settings.Extensions}")
   logger.info(s"Items 🧾:- ${items.mkString("\n")}")
+
+  val ioCapabilities = wire[IoCapabilities]
+  val configConversions = wire[ConfigConversions]
+  val ssyncItemProcessor = wire[SsyncItemProcessor]
+
+  val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings, items)
+  ssyncItems.map { i =>
+    ssyncItemProcessor.processSsyncItem(i)
+  }
+
 }
