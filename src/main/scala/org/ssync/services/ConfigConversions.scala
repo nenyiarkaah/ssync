@@ -5,7 +5,8 @@ import org.ssync.configs.{Item, Settings}
 import org.ssync.models.SsyncItem
 
 class ConfigConversions extends LazyLogging {
-  def convertSettingItemsToSyncItems(settings: Settings, items: List[Item]): List[SsyncItem] = {
+  def convertSettingItemsToSyncItems(settings: Settings): Seq[SsyncItem] = {
+    val items = settings.Items
     items.map { item =>
       val source = mergeSettingsSourcePathWithItemsSourcePath(settings, item.Path)
       SsyncItem(Name = item.Name,

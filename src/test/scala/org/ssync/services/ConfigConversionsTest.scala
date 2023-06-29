@@ -13,29 +13,32 @@ class ConfigConversionsTest extends AnyFlatSpec with Matchers {
   val ignoredExtensions = Seq[String]()
 
   "convertSettingItemsToSyncItems" should "return an empty list when Items is empty" in {
+    val items = List()
     val settings = Settings(Source = source,
       Archive = archive,
       Extensions = extensions,
-      IgnoredExtensions = ignoredExtensions
+      IgnoredExtensions = ignoredExtensions,
+      Items = items
     )
-    val items = List()
     val expected = List()
-    val result =  configConversions.convertSettingItemsToSyncItems(settings, items)
+    val result =  configConversions.convertSettingItemsToSyncItems(settings)
     result shouldBe expected
   }
   it should "return a list of SyncItems with populated Items" in {
     val sub1path = "sub1"
     val sub2path = "sub2"
-    val settings = Settings(Source = source,
-      Archive = archive,
-      Extensions = extensions,
-      IgnoredExtensions = ignoredExtensions
-    )
     val name1 = "sub 1"
     val name2 = "sub 2"
+
     val items = List(
       Item(Name = name1, Path = s"$sub1path", ProtectedDirectories = List[String]()),
       Item(Name = name2, Path = s"$sub2path", ProtectedDirectories = List[String]())
+    )
+    val settings = Settings(Source = source,
+      Archive = archive,
+      Extensions = extensions,
+      IgnoredExtensions = ignoredExtensions,
+      Items = items
     )
     val expected1 = List(SsyncItem(
         Name = name1,
@@ -53,7 +56,7 @@ class ConfigConversionsTest extends AnyFlatSpec with Matchers {
         Extensions = extensions,
         IgnoredExtensions = ignoredExtensions
     ))
-    val result = configConversions.convertSettingItemsToSyncItems(settings, items)
+    val result = configConversions.convertSettingItemsToSyncItems(settings)
     result shouldEqual expected1
   }
 }

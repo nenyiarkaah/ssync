@@ -17,13 +17,12 @@ object AppConfig extends StrictLogging {
 
   implicit def hint[T]: ProductHint[T] = ProductHint[T](ConfigFieldMapping(CamelCase, CamelCase))
 
-  def load: Either[ConfigReaderFailures,(Settings, List[Item])] = {
+  def load: Either[ConfigReaderFailures,(Settings)] = {
     val config = ConfigFactory.parseFile(new File(path), parseOptions).resolve()
     logger.debug("config content:\n {}", config.root().render(renderOptions))
     for {
       settings <- loadConfig[Settings](config, "settings")
-      items <- loadConfig[List[Item]](config, "items")
-    } yield (settings, items)
+    } yield (settings)
   }
 
 }

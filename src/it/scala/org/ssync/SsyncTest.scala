@@ -43,16 +43,17 @@ class Ssync2Test extends AnyFlatSpec with Matchers with BeforeAndAfter with Befo
     val archiveSub1Path = s"$archiveCopyPath/sub 1"
     val extensions = Seq("jpg")
     val ignoredExtensions = Seq[String]()
-
+    val items = List(
+      Item(Name = "sub directory 1", Path = "sub 1", ProtectedDirectories = Seq())
+    )
     val settings = Settings(
       Source = sourceCopyPath,
       Archive = archiveCopyPath,
       Extensions = extensions,
-      IgnoredExtensions = ignoredExtensions
+      IgnoredExtensions = ignoredExtensions,
+      Items = items
     )
-    val items = List(
-      Item(Name = "sub directory 1", Path = "sub 1", ProtectedDirectories = Seq())
-    )
+
     val fileItems = List(
       FileItem(Item = File(s"$sourceSub1Path/firstj.jpg"), Archive = File(s"$archiveSub1Path/firstj.jpg"), State = MOVED)
     )
@@ -68,7 +69,7 @@ class Ssync2Test extends AnyFlatSpec with Matchers with BeforeAndAfter with Befo
     )
 
     val expectedRemainingFiles = Seq(File(s"$sourceSub1Path/first.txt"))
-    val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings, items)
+    val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings)
     val result = ssyncItems.map { i =>
       ssyncItemProcessor.processSsyncItem(i)
     }.head
@@ -93,14 +94,15 @@ class Ssync2Test extends AnyFlatSpec with Matchers with BeforeAndAfter with Befo
     val ignoredExtensions = Seq[String]()
     val sourceSub2 = File(sourceSub2Path)
 
+    val items = List(
+      Item(Name = "sub directory 2", Path = sub2, ProtectedDirectories = Seq())
+    )
     val settings = Settings(
       Source = sourceCopyPath,
       Archive = archiveCopyPath,
       Extensions = extensions,
-      IgnoredExtensions = ignoredExtensions
-    )
-    val items = List(
-      Item(Name = "sub directory 2", Path = sub2, ProtectedDirectories = Seq())
+      IgnoredExtensions = ignoredExtensions,
+      Items = items
     )
     val fileItems = Seq(
       FileItem(Item = File(s"$sourceSub2Path/first.txt"), Archive = File(s"$archiveSub2Path/first.txt"), State = MOVED),
@@ -119,7 +121,7 @@ class Ssync2Test extends AnyFlatSpec with Matchers with BeforeAndAfter with Befo
 
     )
     val expectedRemainingFiles = Seq()
-    val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings, items)
+    val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings)
     val result = ssyncItems.map { i =>
       ssyncItemProcessor.processSsyncItem(i)
     }.head
@@ -144,14 +146,15 @@ class Ssync2Test extends AnyFlatSpec with Matchers with BeforeAndAfter with Befo
     val ignoredExtensions = Seq[String]()
     val sourceSub3 = File(sourceSub3Path)
 
+    val items = List(
+      Item(Name = "sub directory 3", Path = sub3, ProtectedDirectories = Seq())
+    )
     val settings = Settings(
       Source = sourceCopyPath,
       Archive = archiveCopyPath,
       Extensions = extensions,
-      IgnoredExtensions = ignoredExtensions
-    )
-    val items = List(
-      Item(Name = "sub directory 3", Path = sub3, ProtectedDirectories = Seq())
+      IgnoredExtensions = ignoredExtensions,
+      Items = items
     )
     val fileItems = Seq(
       FileItem(Item = File(s"$sourceSub3Path/first.txt"), Archive = File(s"$archiveSub3Path/first.txt"), State = MOVED),
@@ -173,7 +176,7 @@ class Ssync2Test extends AnyFlatSpec with Matchers with BeforeAndAfter with Befo
 
     )
     val expectedRemainingFiles = Seq()
-    val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings, items)
+    val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings)
     val result = ssyncItems.map { i =>
       ssyncItemProcessor.processSsyncItem(i)
     }.head
@@ -198,14 +201,15 @@ class Ssync2Test extends AnyFlatSpec with Matchers with BeforeAndAfter with Befo
     val ignoredExtensions = Seq[String]()
     val sourceSub4 = File(sourceSub4Path)
 
+    val items = List(
+      Item(Name = "sub directory 4", Path = sub4, ProtectedDirectories = Seq())
+    )
     val settings = Settings(
       Source = sourceCopyPath,
       Archive = archiveCopyPath,
       Extensions = extensions,
-      IgnoredExtensions = ignoredExtensions
-    )
-    val items = List(
-      Item(Name = "sub directory 4", Path = sub4, ProtectedDirectories = Seq())
+      IgnoredExtensions = ignoredExtensions,
+      Items = items
     )
     val fileItems = Seq(
       FileItem(Item = File(s"$sourceSub4Path/first.txt"), Archive = File(s"$archiveSub4Path/first.txt"), State = MOVED),
@@ -233,7 +237,7 @@ class Ssync2Test extends AnyFlatSpec with Matchers with BeforeAndAfter with Befo
 
     )
     val expectedRemainingFiles = Seq()
-    val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings, items)
+    val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings)
     val result = ssyncItems.map { i =>
       ssyncItemProcessor.processSsyncItem(i)
     }.head
@@ -258,14 +262,15 @@ class Ssync2Test extends AnyFlatSpec with Matchers with BeforeAndAfter with Befo
     val ignoredExtensions = Seq[String]()
     val sourceSub5 = File(sourceSub5Path)
 
+    val items = List(
+      Item(Name = "sub directory 5", Path = sub5, ProtectedDirectories = Seq())
+    )
     val settings = Settings(
       Source = sourceCopyPath,
       Archive = archiveCopyPath,
       Extensions = extensions,
-      IgnoredExtensions = ignoredExtensions
-    )
-    val items = List(
-      Item(Name = "sub directory 5", Path = sub5, ProtectedDirectories = Seq())
+      IgnoredExtensions = ignoredExtensions,
+      Items = items
     )
     val fileItems = Seq(
       FileItem(Item = File(s"$sourceSub5Path/first.txt"), Archive = File(s"$archiveSub5Path/first.txt"), State = MOVED),
@@ -293,7 +298,7 @@ class Ssync2Test extends AnyFlatSpec with Matchers with BeforeAndAfter with Befo
 
     )
     val expectedRemainingFiles = Seq()
-    val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings, items)
+    val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings)
     val result = ssyncItems.map { i =>
       ssyncItemProcessor.processSsyncItem(i)
     }.head
@@ -317,14 +322,15 @@ class Ssync2Test extends AnyFlatSpec with Matchers with BeforeAndAfter with Befo
     val ignoredExtensions = Seq[String]()
     val sourceSub1 = File(sourceSub1Path)
 
+    val items = List(
+      Item(Name = "sub directory 1", Path = "sub 1", ProtectedDirectories = Seq())
+    )
     val settings = Settings(
       Source = sourceCopyPath,
       Archive = archiveCopyPath,
       Extensions = extensions,
-      IgnoredExtensions = ignoredExtensions
-    )
-    val items = List(
-      Item(Name = "sub directory 1", Path = "sub 1", ProtectedDirectories = Seq())
+      IgnoredExtensions = ignoredExtensions,
+      Items = items
     )
     val fileItems = List(
       FileItem(Item = File(s"$sourceSub1Path/first.txt"), Archive = File(s"$archiveSub1Path/first.txt"), State = MOVED)
@@ -341,7 +347,7 @@ class Ssync2Test extends AnyFlatSpec with Matchers with BeforeAndAfter with Befo
     )
 
     val expectedRemainingFiles = Seq(File(s"$sourceSub1Path/firstj.jpg"))
-    val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings, items)
+    val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings)
     val result = ssyncItems.map { i =>
       ssyncItemProcessor.processSsyncItem(i)
     }.head
@@ -366,14 +372,15 @@ class Ssync2Test extends AnyFlatSpec with Matchers with BeforeAndAfter with Befo
     val ignoredExtensions = Seq[String]()
     val sourceSub2 = File(sourceSub2Path)
 
+    val items = List(
+      Item(Name = "sub directory 2", Path = sub2, ProtectedDirectories = Seq())
+    )
     val settings = Settings(
       Source = sourceCopyPath,
       Archive = archiveCopyPath,
       Extensions = extensions,
-      IgnoredExtensions = ignoredExtensions
-    )
-    val items = List(
-      Item(Name = "sub directory 2", Path = sub2, ProtectedDirectories = Seq())
+      IgnoredExtensions = ignoredExtensions,
+      Items = items
     )
     val fileItems = Seq(
       FileItem(Item = File(s"$sourceSub2Path/first.txt"), Archive = File(s"$archiveSub2Path/first.txt"), State = MOVED),
@@ -391,7 +398,7 @@ class Ssync2Test extends AnyFlatSpec with Matchers with BeforeAndAfter with Befo
 
     )
     val expectedRemainingFiles = Seq(File(s"$sourceSub2Path/test.jpg"))
-    val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings, items)
+    val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings)
     val result = ssyncItems.map { i =>
       ssyncItemProcessor.processSsyncItem(i)
     }.head
@@ -415,14 +422,15 @@ class Ssync2Test extends AnyFlatSpec with Matchers with BeforeAndAfter with Befo
     val ignoredExtensions = Seq[String]()
     val sourceSub3 = File(sourceSub3Path)
 
+    val items = List(
+      Item(Name = "sub directory 3", Path = sub3, ProtectedDirectories = Seq())
+    )
     val settings = Settings(
       Source = sourceCopyPath,
       Archive = archiveCopyPath,
       Extensions = extensions,
-      IgnoredExtensions = ignoredExtensions
-    )
-    val items = List(
-      Item(Name = "sub directory 3", Path = sub3, ProtectedDirectories = Seq())
+      IgnoredExtensions = ignoredExtensions,
+      Items = items
     )
     val fileItems = Seq(
       FileItem(Item = File(s"$sourceSub3Path/first.txt"), Archive = File(s"$archiveSub3Path/first.txt"), State = MOVED),
@@ -446,7 +454,7 @@ class Ssync2Test extends AnyFlatSpec with Matchers with BeforeAndAfter with Befo
       File(s"$sourceSub3Path/sub"),
       File(s"$sourceSub3Path/sub/test.jpg")
     )
-    val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings, items)
+    val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings)
     val result = ssyncItems.map { i =>
       ssyncItemProcessor.processSsyncItem(i)
     }.head
@@ -470,14 +478,15 @@ class Ssync2Test extends AnyFlatSpec with Matchers with BeforeAndAfter with Befo
     val extensions = Seq("*")
     val ignoredExtensions = Seq[String]()
 
+    val items = List(
+      Item(Name = name, Path = sub3, ProtectedDirectories = Seq("sub"))
+    )
     val settings = Settings(
       Source = sourceCopyPath,
       Archive = archiveCopyPath,
       Extensions = extensions,
-      IgnoredExtensions = ignoredExtensions
-    )
-    val items = List(
-      Item(Name = name, Path = sub3, ProtectedDirectories = Seq("sub"))
+      IgnoredExtensions = ignoredExtensions,
+      Items = items
     )
     val fileItems = Seq(
       FileItem(Item = File(s"$sourceSub3Path/first.txt"), Archive = File(s"$archiveSub3Path/first.txt"), State = MOVED),
@@ -502,7 +511,7 @@ class Ssync2Test extends AnyFlatSpec with Matchers with BeforeAndAfter with Befo
       File(s"$sourceSub3Path/sub")
     )
 
-    val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings, items)
+    val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings)
     val result = ssyncItems.map { i =>
       ssyncItemProcessor.processSsyncItem(i)
     }.head
@@ -527,15 +536,16 @@ class Ssync2Test extends AnyFlatSpec with Matchers with BeforeAndAfter with Befo
     val extensions = Seq("*")
     val ignoredExtensions = Seq[String]()
 
+    val protectedDirectories = Seq("sub", "sub 1")
+    val items = List(
+      Item(Name = "sub directory 4", Path = sub4, ProtectedDirectories = protectedDirectories)
+    )
     val settings = Settings(
       Source = sourceCopyPath,
       Archive = archiveCopyPath,
       Extensions = extensions,
-      IgnoredExtensions = ignoredExtensions
-    )
-    val protectedDirectories = Seq("sub", "sub 1")
-    val items = List(
-      Item(Name = "sub directory 4", Path = sub4, ProtectedDirectories = protectedDirectories)
+      IgnoredExtensions = ignoredExtensions,
+      Items = items
     )
     val fileItems = Seq(
       FileItem(Item = File(s"$sourceSub4Path/first.txt"), Archive = File(s"$archiveSub4Path/first.txt"), State = MOVED),
@@ -567,7 +577,7 @@ class Ssync2Test extends AnyFlatSpec with Matchers with BeforeAndAfter with Befo
       File(s"$sourceSub4Path/sub/sub 1"),
       File(s"$sourceSub4Path/sub 1")
     )
-    val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings, items)
+    val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings)
     val result = ssyncItems.map { i =>
       ssyncItemProcessor.processSsyncItem(i)
     }.head
@@ -591,14 +601,15 @@ class Ssync2Test extends AnyFlatSpec with Matchers with BeforeAndAfter with Befo
     val extensions = Seq("*")
     val ignoredExtensions = Seq[String]("jpg")
 
+    val items = List(
+      Item(Name = "sub directory 3", Path = sub3, ProtectedDirectories = Seq())
+    )
     val settings = Settings(
       Source = sourceCopyPath,
       Archive = archiveCopyPath,
       Extensions = extensions,
-      IgnoredExtensions = ignoredExtensions
-    )
-    val items = List(
-      Item(Name = "sub directory 3", Path = sub3, ProtectedDirectories = Seq())
+      IgnoredExtensions = ignoredExtensions,
+      Items = items
     )
     val fileItems = Seq(
       FileItem(Item = File(s"$sourceSub3Path/first.txt"), Archive = File(s"$archiveSub3Path/first.txt"), State = MOVED),
@@ -622,7 +633,7 @@ class Ssync2Test extends AnyFlatSpec with Matchers with BeforeAndAfter with Befo
       File(s"$sourceSub3Path/sub/test.jpg"),
       File(s"$sourceSub3Path/sub")
     )
-    val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings, items)
+    val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings)
     val result = ssyncItems.map { i =>
       ssyncItemProcessor.processSsyncItem(i)
     }.head

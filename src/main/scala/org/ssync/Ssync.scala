@@ -25,19 +25,19 @@ object Ssync extends App with LazyLogging {
       |""".stripMargin)
   logger.info(toJson)
 
-  val (settings, items) =
+  val (settings) =
     load.fold(e => sys.error(s"Failed to load configuration:\n${e.toList.mkString("\n")}"), identity)
 
   logger.info(s"Source 🥫:- ${settings.Source}")
   logger.info(s"Destination 🏛️:- ${settings.Archive}")
   logger.info(s"Extensions ፝:- ${settings.Extensions}")
-  logger.info(s"Items 🧾:- ${items.mkString("\n")}")
+  logger.info(s"Items 🧾:- ${settings.Items.mkString("\n")}")
 
   val ioCapabilities = wire[IoCapabilities]
   val configConversions = wire[ConfigConversions]
   val ssyncItemProcessor = wire[SsyncItemProcessor]
 
-  val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings, items)
+  val ssyncItems = configConversions.convertSettingItemsToSyncItems(settings)
   ssyncItems.map { i =>
     ssyncItemProcessor.processSsyncItem(i)
   }

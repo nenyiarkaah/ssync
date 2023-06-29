@@ -4,5 +4,6 @@ case class Settings(
                      Source: String,
                      Archive: String,
                      Extensions: Seq[String],
-                     IgnoredExtensions: Seq[String]
+                     IgnoredExtensions: Seq[String],
+                     Items: Seq[Item]
                  )
