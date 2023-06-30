@@ -1,18 +1,21 @@
 package org.ssync.services
 
 import better.files.File
+import com.typesafe.scalalogging.StrictLogging
 import org.ssync.models.FileItem
 import org.ssync.models.FileItemState.MOVED
 
 import java.util.UUID
 
-class IoCapabilities {
+class IoCapabilities extends StrictLogging {
   def moveFileItem(fileItem: FileItem): FileItem = {
     val source = fileItem.Item
     val archive = fileItem.Archive
     archive.parent.createDirectoryIfNotExists(createParents = true)
     source.moveTo(archive)
-    FileItem(Item = fileItem.Item, Archive = fileItem.Archive, State = MOVED)
+    val newFileItem = FileItem(Item = fileItem.Item, Archive = fileItem.Archive, State = MOVED)
+    logger.info(s"$newFileItem")
+    newFileItem
   }
 
   def doesSourceExist(path: String): Boolean = {

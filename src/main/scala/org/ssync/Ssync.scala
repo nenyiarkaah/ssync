@@ -41,5 +41,5 @@ object Ssync extends App with LazyLogging {
   ssyncItems.map { i =>
     ssyncItemProcessor.processSsyncItem(i)
   }
-
+logger.info("ssync complete")
 }

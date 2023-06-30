@@ -21,7 +21,7 @@ lazy val root = (project in file("."))
     ThisBuild / organization := "org.ssync",
     ThisBuild / scalaVersion := "2.13.11",
     name := "ssync",
-    ThisBuild / version := "0.1.5",
+    ThisBuild / version := "0.1.6",
     libraryDependencies ++= Seq(
       "org.scalatest" %% "scalatest" % scalatestVersion % "it,test",
       "org.scalatest" %% "scalatest-flatspec" % scalatestVersion % Test,
